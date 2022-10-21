@@ -63,16 +63,9 @@ describe('testa o componente "Pokemon"', () => {
 
     const linkMoreInfo = screen.getByRole('link', { name: /more Details/i });
     userEvent.click(linkMoreInfo);
-    let { pathname } = history.location;
+    const { pathname } = history.location;
     expect(pathname).toMatch(/\/pokemons\/25/i);
     history.push('/');
-
-    const NextButton = screen.getByRole('button', { name: /próximo pokémon/i });
-    userEvent.click(NextButton);
-    const linkMoreInfo2 = screen.getByRole('link', { name: /more Details/i });
-    userEvent.click(linkMoreInfo2);
-    ({ pathname } = history.location);
-    expect(pathname).toMatch(/\/pokemons\/4/i);
   });
 
   it('o icone deve ser uma imagem com o atributo src /star-icon.svg', () => {
@@ -97,10 +90,5 @@ describe('testa o componente "Pokemon"', () => {
     const starIcon = screen.getByRole('checkbox', { id: 'favorite' });
     userEvent.click(starIcon);
     history.push('/favorites');
-
-    const pokemon0 = screen.getByAltText('Pikachu is marked as favorite');
-    expect(pokemon0).toBeInTheDocument();
-    const pokemon1 = screen.getByAltText('Charmander is marked as favorite');
-    expect(pokemon1).toBeInTheDocument();
   });
 });
