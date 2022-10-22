@@ -16,16 +16,20 @@ describe('Teste a exibição detalhada do pokémon selecionado é mostrado na te
     history.push('/');
   });
   it('testa de há um elemento h2 com o texto summary', () => {
-    const { history } = renderWithRouter(<App />);
-    const pageDetailsPikachu = '/pokemons/25';
-    history.push(pageDetailsPikachu);
+    renderWithRouter(<App />);
+    const linkMoreInfo = screen.getByRole('link', { name: /more Details/i });
+    userEvent.click(linkMoreInfo);
+    const sumaryText = screen.getByRole('heading', { name: /summary/i, level: 2 });
+    expect(sumaryText).toBeInTheDocument();
   });
 
   it(`A seção de detalhes deve conter um parágrafo com o resumo 
   do pokémon específico sendo visualizado.`, () => {
-    const { history } = renderWithRouter(<App />);
-    const pageCharmander = '/pokemons/4';
-    history.push(pageCharmander);
+    renderWithRouter(<App />);
+    const bntFire = screen.getByRole('button', { name: /fire/i });
+    userEvent.click(bntFire);
+    const linkMoreInfo = screen.getByRole('link', { name: /more Details/i });
+    userEvent.click(linkMoreInfo);
     const sectionCharmander = screen
       .getByText(/The flame on its tail shows the strength of its life force/i);
     expect(sectionCharmander).toBeInTheDocument();
@@ -35,17 +39,22 @@ describe('Teste a exibição detalhada do pokémon selecionado é mostrado na te
 describe(`Teste se existe na página uma seção com os mapas
    contendo as localizações do pokémon:`, () => {
   it('testa se há um elemento h2 com o texto Game Locations of', () => {
-    const { history } = renderWithRouter(<App />);
-    const pageDetailsCaterpie = '/pokemons/10';
-    history.push(pageDetailsCaterpie);
+    renderWithRouter(<App />);
+    const bntFire = screen.getByRole('button', { name: /fire/i });
+    userEvent.click(bntFire);
+    const linkMoreInfo = screen.getByRole('link', { name: /more Details/i });
+    userEvent.click(linkMoreInfo);
     const gameLocations = screen
-      .getByRole('heading', { name: /game locations of Caterpie/i, level: 2 });
+      .getByRole('heading', { name: /game locations of Charmander/i, level: 2 });
     expect(gameLocations).toBeInTheDocument();
   });
   it('testa se todas as localizações são mostradas na secção detalhes', () => {
-    const { history } = renderWithRouter(<App />);
-    const pageDetailsCaterpie = '/pokemons/10';
-    history.push(pageDetailsCaterpie);
+    renderWithRouter(<App />);
+    const bntBug = screen.getByRole('button', { name: /bug/i });
+    userEvent.click(bntBug);
+    const linkMoreInfo = screen.getByRole('link', { name: /more Details/i });
+    userEvent.click(linkMoreInfo);
+    const imgMapLocalization = screen.getAllByAltText('Caterpie location');
     const imgMapName = imgMapLocalization[0].nextSibling;
     const imgMapName2 = imgMapLocalization[1].nextSibling;
     const imgMapName3 = imgMapLocalization[2].nextSibling;
@@ -60,30 +69,37 @@ describe(`Teste se existe na página uma seção com os mapas
     expect(imgMapName4.innerHTML).toMatch('Johto National Park');
   });
 });
+
 describe(`Teste se o usuário pode favoritar
    um pokémon através da página de detalhes`, () => {
   it('testa se o pokémon é favoritado', () => {
-    const { history } = renderWithRouter(<App />);
-    const pageDetailsCharmander = '/pokemons/4';
-    history.push(pageDetailsCharmander);
+    renderWithRouter(<App />);
+    const bntFire = screen.getByRole('button', { name: /fire/i });
+    userEvent.click(bntFire);
+    const linkMoreInfo = screen.getByRole('link', { name: /more Details/i });
+    userEvent.click(linkMoreInfo);
     const checkbox = screen.getByRole('checkbox', { id: /favorite/i });
     expect(checkbox).toBeInTheDocument();
   });
   it('Cliques alternados no checkbox devem adicionar e remover o pokémon', () => {
     const { history } = renderWithRouter(<App />);
-    const pageDetailsAlakazam = '/pokemons/65';
-    history.push(pageDetailsAlakazam);
+    const bntFire = screen.getByRole('button', { name: /fire/i });
+    userEvent.click(bntFire);
+    const linkMoreInfo = screen.getByRole('link', { name: /more Details/i });
+    userEvent.click(linkMoreInfo);
     const checkbox = screen.getByRole('checkbox', { id: /favorite/i });
     userEvent.click(checkbox);
     history.push('/favorites');
     const PokemonName = screen.getAllByTestId('pokemon-name');
-    expect(PokemonName[0].innerHTML).toMatch('Alakazam');
+    expect(PokemonName[0].innerHTML).toMatch('Charmander');
   });
   it('O label do checkbox deve conter o texto Pokémon favoritado?', () => {
-    const { history } = renderWithRouter(<App />);
-    const pageDetailsAlakazam = '/pokemons/65';
-    history.push(pageDetailsAlakazam);
-    const checkboxText = screen.getByLabelText('favorite');
+    renderWithRouter(<App />);
+    const bntFire = screen.getByRole('button', { name: /fire/i });
+    userEvent.click(bntFire);
+    const linkMoreInfo = screen.getByRole('link', { name: /more Details/i });
+    userEvent.click(linkMoreInfo);
+    const checkboxText = screen.getByLabelText('Pokémon favoritado?');
     expect(checkboxText).toBeInTheDocument();
   });
 });
